@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bag Brand</title>
+
+  {{ content_for_header }}
+  <link rel="stylesheet" href="{{ 'styles.css' | asset_url }}">
+</head>
+<body>
+ {%  section 'announcement-bar' %} 
+ 
+ {%  section 'header' %} 
+
+  {{ content_for_layout }}
+
+{%  section 'footer' %} 
+
+</body>
+</html>

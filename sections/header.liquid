@@ -1,0 +1,132 @@
+<section>
+
+<div class="header-nav">
+  
+ <div class="left-nav">
+
+  {% if section.settings.image != blank %}
+   <a href="/">
+    <img src="{{ section.settings.image |  image_url }}" width="20" height="20"/>
+   </a>
+  {% else %}
+  <a href="/">
+    <img src="{{ 'logo4.png' |  asset_url }}" width="20" height="20"/>
+  </a>
+  {% endif %}
+
+ </div>
+
+ <div class="middle-nav">
+  <ul class="middle-nav-links">
+    {% for link in linklists['main-menu'].links -%}
+      <li>{{ link.title | link_to: link.url }}</li>
+    {%- endfor %}
+  </ul>
+</div>
+
+ <div class="right-nav">
+ {% comment %} search {% endcomment %}
+ <a href="#">
+   <img src="{{ 'search.png' |  asset_url }}" width="20" height="20"/>
+  </a>
+
+ {% comment %} user {% endcomment %}
+ <a href="/">
+ <img src="{{ 'user.png' |  asset_url }}" width="20" height="20"/>
+</a>
+
+ {% comment %} cart {% endcomment %}
+ <a href="/">
+   <img src="{{ 'cart.png' |  asset_url }}" width="20" height="20"/>
+  </a>
+  </div>
+
+
+</div>
+
+</section>
+
+<style>
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: "{{ section.settings.background_color }}";
+      color: "{{ section.settings.text_color }}"
+    }
+
+    .left-nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .middle-nav-links {
+        display: flex;
+        font-size: 16px;
+      }
+    
+      .middle-nav-links li {
+        list-style-type: none;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    
+      .middle-nav-links li:hover {
+        text-decoration: underline;
+      }
+    
+      .middle-nav-links a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .right-nav {
+        display: flex;
+        align-items: center;
+        position: relative;
+        gap:20px;
+      }
+
+      @media (max-width: 480px) {
+
+      .header-nav {
+        padding-top: 10px;
+      }
+
+      .middle-nav {
+        display: none;
+      }
+
+      }
+  
+</style>
+
+{% schema  %} 
+{
+  "name": "header",
+  "settings": [
+   {
+    "type": "image_picker",
+    "id": "image",
+    "label": "image logo",
+    "info": "png recommonded"
+   },
+   {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#706a66"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f5eee9"
+    }
+  ],
+  "presets": [
+    {"name": "header"}
+  ]
+}
+{% endschema %}

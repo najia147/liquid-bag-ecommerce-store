@@ -1,0 +1,139 @@
+<section class="hero-two-images">
+  <div class="hero-images-wrapper">
+    <div class="hero-image image-left">
+      <img src="{{ section.settings.image | image_url }}" alt="Image 1" />
+    </div>
+    <div class="hero-image image-right">
+      <img src="{{ section.settings.image2 | image_url }}" alt="Image 2" />
+    </div>
+    <div class="hero-text-content">
+      <h1>{{ section.settings.title_text }}</h1>
+      <p>{{ section.settings.description_text }}</p>
+      <button class="hero-button">Explore Now</button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-two-images {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  overflow: hidden;
+}
+
+.hero-images-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hero-image {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-text-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  max-width: 70%;
+  z-index: 2;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4); /* Optional dark overlay */
+  border-radius: 10px;
+}
+
+.hero-text-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.hero-text-content p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.hero-button:hover {
+  background-color: #e1e3e6;
+}
+
+@media (max-width: 768px) {
+  .hero-images-wrapper {
+    flex-direction: column;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 50%;
+  }
+
+  .hero-text-content {
+    top: auto;
+    bottom: 10%;
+    transform: translate(-50%, 0);
+    max-width: 90%;
+  }
+
+  .hero-text-content h1 {
+    font-size: 2rem;
+  }
+}
+
+</style>
+
+{% schema %}
+  {
+    "name": "Hero with Two Images",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title_text",
+        "label": "Title",
+        "default": "Welcome to Our Store"
+      },
+      {
+        "type": "text",
+        "id": "description_text",
+        "label": "Description",
+        "default": "Discover the latest trends now"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Left Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image2",
+        "label": "Right Image"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero - Two Images with Text"
+      }
+    ]
+  }
+  {% endschema %}
+  

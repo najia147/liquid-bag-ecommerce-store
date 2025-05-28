@@ -1,0 +1,126 @@
+<section>
+  <div class="container">
+    <div class="texts">
+      <p><a href="#"><span>{{ section.settings.text1 }}</span></a><a href="#"><span>{{ section.settings.text2 }}</span></a></p>
+    </div>
+    <h1>{{ section.settings.title }}</h1>
+    <p>{{ section.settings.paragraph }}</p>
+    <a href="{{ section.settings.collection_link.url }}" class="button-link">
+      {{ section.settings.button_text }}
+    </a>    
+
+  </div>
+</section>
+
+<style>
+  .container {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    width:100%; 
+    height:300px;
+    font-family:Arial, Helvetica, sans-serif;
+    color: {{ section.settings.text_color }};
+    background-color: {{ section.settings.background_color }};
+
+  }  
+
+ span {
+  cursor:pointer;
+  margin-right: 20px;
+  color: {{ section.settings.text_color }};
+ }
+
+ .texts a{
+  text-decoration:none;
+ }
+
+ .button-link {
+  display: inline-block;
+  padding: 3%;
+  width: 20%;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: {{ section.settings.background_button_color }};
+  color: {{ section.settings.button_color }};
+  text-align: center;
+  text-decoration: none;
+}
+
+
+ 
+</style>
+
+{%  schema  %} 
+{
+  "name": "Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#0f0f0f"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f2f4f7"
+    },
+    {
+      "type": "text",
+      "id": "text1",
+      "label": "Text1",
+      "default": "[STUDIO 25]"
+    },
+    {
+      "type": "text",
+      "id": "text2",
+      "label": "Text2",
+      "default": "[EXPLORER]"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "NEVER LOSE THE 100 YEAR COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "paragraph",
+      "label": "Paragraph",
+      "default": "The collection that defined modern design is back from the archive."
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#f7f2f2"
+    },
+    {
+      "type": "color",
+      "id": "background_button_color",
+      "label": "Background Button Color",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "EXPLORE COLLECTION"
+    },
+    {
+      "type": "collection",
+      "id": "collection_link",
+      "label": "Link to Collection"
+    }
+
+  ],
+  "presets": [
+      {
+        "name": "Banner"
+      }
+    ]
+}
+{% endschema %}

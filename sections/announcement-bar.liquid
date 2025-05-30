@@ -1,0 +1,126 @@
+<section class="announcement-bar">
+  <div class="banner-wrapper">
+    {% if section.settings.text1 != blank %}
+      <div class="slide-text" id="text1"><p>{{ section.settings.text1 }}</p></div>
+    {% endif %}
+    {% if section.settings.text2 != blank %}
+      <div class="slide-text" id="text2"><p>{{ section.settings.text2 }}</p></div>
+    {% endif %}
+    {% if section.settings.text3 != blank %}
+      <div class="slide-text" id="text3"><p>{{ section.settings.text3 }}</p></div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .announcement-bar {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .banner-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+    font-size: 20px;
+    padding: 5px 5px;
+  }
+
+  .slide-text {
+    position: absolute;
+    white-space: nowrap;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+  }
+
+  .slide-text.active {
+    opacity: 1;
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    .banner-wrapper {
+      font-size: 14px;
+      padding: 8px 12px;
+      height: auto;
+      text-align: center;
+    }
+
+    .slide-text p {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const texts = document.querySelectorAll('.slide-text');
+    let currentIndex = 0;
+
+    function showText(index) {
+      texts.forEach((el, i) => {
+        el.classList.remove('active');
+        if (i === index) {
+          el.classList.add('active');
+        }
+      });
+    }
+
+    if (texts.length > 0) {
+      showText(currentIndex);
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % texts.length;
+        showText(currentIndex);
+      }, 3000);
+    }
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text1",
+        "label": "Announcement Text 1",
+        "default": "Members: Free Shipping!"
+      },
+      {
+        "type": "text",
+        "id": "text2",
+        "label": "Announcement Text 2",
+        "default": "Save Up to 40% on Bags!"
+      },
+      {
+        "type": "text",
+        "id": "text3",
+        "label": "Announcement Text 3",
+        "default": "Get Your Gear Faster"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#F4F4F4"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#000000"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Announcement Bar",
+        "category": "Custom"
+      }
+    ]
+  }
+  {% endschema %}
+  

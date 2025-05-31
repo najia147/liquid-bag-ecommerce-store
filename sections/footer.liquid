@@ -1,0 +1,258 @@
+<footer class="footer-main">
+  <div class="hr-div">
+    <hr class="footer-hr">
+  </div>
+  
+  <div class="footer-sec-1">
+    {% if section.blocks.size == 0 %}
+      <div>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+      </div>
+      <div>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+      </div>
+      <div>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+      </div>
+      <div>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+        <p>X</p>
+      </div>
+    {% else %}
+     <div class="dynamic-blocks-wrapper">
+      <div class="footer-blocks">
+        {% for block in section.blocks %}
+          <div class="footer-block">
+            <ul>
+              <li><a href="{{ block.settings.link }}" class="footer-block-link">{{ block.settings.text | escape }}</a></li>
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="hr-div">
+    <hr class="footer-hr">
+  </div>
+  <div class="footer-links">
+    {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+        <p><a href="/account">My Account</a></p>
+      {% else %}
+        <p><a href="/account/register">Register</a> | <a href="/account/login">Login</a></p>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="footer-sec-2">
+    <p><a href="/blogs/news">Guides</a></p>
+    <p><a href="/blogs/news">Terms of Sale</a></p>
+    <p><a href="/blogs/news">Privacy Policy</a></p>
+    <p><a href="/blogs/news">Visit our Blog</a></p>
+  </div>
+</footer>
+
+<style>
+  .footer-main {
+    background: {{ section.settings.background }};
+    color: {{ section.settings.text_color }};
+    padding: 10px;
+    margin-top: 50px;
+  }
+  
+  .footer-sec-1 {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .footer-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .footer-block {
+    margin: 10px;
+    flex: 1 1 22%; /* Adjust width for multiple blocks */
+  }
+
+  .footer-block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .dynamic-blocks-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-block-link {
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+  }
+
+  .footer-block-link:hover {
+    color: #007bff;
+  }
+
+  .footer-sec-2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .footer-sec-2 p {
+    padding: 10px;
+  }
+
+  .footer-sec-2 a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .hr-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;   
+  }
+
+  /* Styling for the horizontal line */
+  .footer-hr {
+    margin: 30px 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+    width: 80%;
+   
+  }
+
+  /* Styling for the Register and Login links */
+  .footer-links {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .footer-links a {
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover {
+    color: #007bff;
+  }
+
+  /* Mobile and Tablet Responsiveness */
+  @media (max-width: 768px) {
+    .footer-sec-1 {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-blocks {
+      justify-content: center;
+    }
+
+    .footer-block {
+      flex: 1 1 100%; /* Stacks blocks vertically on small screens */
+      text-align: center;
+    }
+
+    .footer-sec-2 p {
+      padding: 5px;
+    }
+
+    .footer-hr {
+      width: 90%;
+    }
+
+    .footer-links a {
+      font-size: 14px;
+      margin: 0 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-block-link {
+      font-size: 14px; /* Smaller font on very small screens */
+    }
+
+    .footer-sec-2 {
+      gap: 5px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#F4F4F4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Links",
+      "type": "links",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "link"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "footer"
+    }
+  ]
+}
+{% endschema %}

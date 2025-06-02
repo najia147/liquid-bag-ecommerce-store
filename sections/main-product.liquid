@@ -1,0 +1,318 @@
+<section class="product-main">
+  <div class="product-main-wrapper">
+    <div class="product-images">
+      <!-- Main Product Image -->
+      <img class="main-product-image"
+        width="600"
+        height="600"
+        loading="lazy"
+        src="{{ product.featured_image | image_url}}"
+        alt="{{ product.title }}">
+      
+    </div>
+
+    <div class="product-details">
+      <h2>{{ product.title }}</h2>
+
+      <!-- Stock Availability -->
+      <p class="stock-status">
+        {% if product.available %}
+          <span class="in-stock">In Stock</span>
+        {% else %}
+          <span class="out-of-stock">Out of Stock</span>
+        {% endif %}
+      </p>
+
+      <p class="product-price">{{ product.price | money }}</p>
+
+      <h3>Select Variant</h3>
+      
+      <!-- Product Form -->
+      {% form 'product', product %}
+        <select name="id" id="product-variant">
+          {% for variant in product.variants %}
+            <option value="{{ variant.id }}">
+              {{ variant.title }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <!-- Add to Cart Button -->
+        <button type="submit" class="add-to-cart-btn" id="add-to-cart-button">Add to Cart</button>
+      {% endform %}
+    </div>
+  </div>
+  
+
+</section>
+
+<!-- Image Thumbnails -->
+<div class="product-description">
+  {% for image in product.images %}
+    <button class="thumbnail-button" onclick="document.querySelector('.main-product-image').src='{{ image | image_url }}'">
+      <img class="thumbnail" src="{{ image | image_url }}" alt="Thumbnail">
+    </button>
+  {% endfor %}
+ </div>
+
+<!-- Product Description -->
+<div class="product-description">
+  {{ product.description | default: 'No description available.' }}
+</div>
+
+
+
+<!-- Message Displayed After Adding to Cart -->
+<div id="add-to-cart-message" style="display: none;">Added to Cart!</div>
+
+<script>
+// Handle form submission and AJAX request to add product to cart
+const addToCartForms = document.querySelectorAll('form[action="/cart/add"]');
+
+addToCartForms.forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    // Prevent normal form submission
+    //  event.preventDefault();
+
+    // Use FormData to capture the form data (including the variant ID)
+    const formData = new FormData(form);
+
+    // Send the form data to the /cart/add endpoint using fetch
+    await fetch("/cart/add.js", {
+      method: "POST",
+      body: formData
+    });
+
+    // Fetch the updated cart object
+    const res = await fetch("/cart.json");
+    const cart = await res.json();
+
+    // Update the cart item count in the UI
+    document.querySelectorAll(".cart-count").forEach((el) => {
+      el.textContent = cart.item_count;
+    });
+
+    // Display the message that the product was added to the cart
+    const message = document.getElementById('add-to-cart-message');
+    message.style.display = 'block';
+
+    // Optionally, hide the message after 2 seconds
+    setTimeout(() => {
+      message.style.display = 'none';
+    }, 2000);
+  });
+});
+</script>
+
+
+<style>
+
+.product-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+  padding: 20px;
+  background-color: {{ settings.background }};
+  color: {{ settings.text_color }};
+}
+
+
+
+.product-main-wrapper {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 50px;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.product-images {
+  flex: 1;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.main-product-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-thumbnails {
+  margin-top: 10px;
+}
+
+.thumbnail-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 5px;
+  
+}
+
+.thumbnail-button .thumbnail {
+  width: 80px;
+  height: 80px;
+  margin: 5px;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-button:hover .thumbnail {
+  transform: scale(1.1);
+}
+
+.product-details {
+  flex: 1;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-details select {
+  padding: 12px 20px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  color: #333;
+  appearance: none; /* Removes the default arrow on some browsers */
+  transition: border-color 0.3s ease;
+}
+
+.product-details select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.product-details h2 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.stock-status {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.in-stock {
+  color: green;
+  font-weight: bold;
+}
+
+.out-of-stock {
+  color: red;
+  font-weight: bold;
+}
+
+.product-price {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.product-details select {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.product-details button {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-details button:hover {
+  background-color: #0056b3;
+}
+
+.product-details button:focus {
+  outline: none;
+}
+
+.product-description {
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.product-description p {
+  font-size: 16px;
+  line-height: 1.6;
+
+}
+
+
+
+#add-to-cart-message {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 20px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .product-main-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-details {
+    width: 100%;
+  }
+
+  .product-images {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+</style>
+
+
+{% schema %}
+    {
+      "name": "Product-main",
+      "settings": [
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#F4F4F4"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "#000000"
+        }
+      ],
+      "presets": [
+        {
+          "name": "product-main"
+        }
+      ]
+    }
+{% endschema %}
